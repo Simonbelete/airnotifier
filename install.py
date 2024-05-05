@@ -61,7 +61,7 @@ if __name__ == "__main__":
     mongodb = pymongo.MongoClient(options.mongouri)
     masterdb = mongodb[options.masterdb]
 
-    collection_names = masterdb.collection_names()
+    collection_names = masterdb.list_collection_names()
     try:
         if not "applications" in collection_names:
             masterdb.create_collection("applications")
@@ -74,7 +74,7 @@ if __name__ == "__main__":
         if not "managers" in collection_names:
             masterdb.create_collection("managers")
             #  masterdb.managers.ensure_index("username", unique=True)
-            masterdb.managers.ensure_index("email", unique=True)
+            masterdb.managers.create_index("email", unique=True)
             logging.info("db.managers installed")
             try:
                 user = masterdb.managers.find_one({"email": EMAIL})
